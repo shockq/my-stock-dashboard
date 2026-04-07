@@ -96,11 +96,28 @@ else:
                 fig.add_hline(y=70, line_dash="dash", line_color="red", row=3, col=1)
                 fig.add_hline(y=30, line_dash="dash", line_color="blue", row=3, col=1)
 
-                # 차트 디자인 정리
-                fig.update_layout(height=700, margin=dict(l=0, r=0, b=0, t=30), showlegend=False)
+                # 차트 디자인 정리 및 십자선(Crosshair) 설정
+                fig.update_layout(
+                    height=700, 
+                    margin=dict(l=0, r=0, b=0, t=30), 
+                    showlegend=False,
+                    hovermode="x unified"  # 마우스 위치 기준 하나의 통합 정보창 띄우기
+                )
+                
+                # Y축 이름 설정
                 fig.update_yaxes(title_text="주가", row=1, col=1)
                 fig.update_yaxes(title_text="거래량", row=2, col=1)
                 fig.update_yaxes(title_text="RSI 지수", range=[0, 100], row=3, col=1)
-                fig.update_xaxes(rangeslider_visible=False) # 깔끔함을 위해 기본 범위 슬라이더 숨김
-
+                
+                # X축 세로선(Spike line) 설정
+                fig.update_xaxes(
+                    rangeslider_visible=False, # 하단 기본 슬라이더 숨김
+                    showspikes=True,           # 마우스 오버 시 세로선 켜기
+                    spikemode='across',        # 3개의 차트 전체를 관통하도록 위아래로 길게 설정
+                    spikesnap='cursor',        # 마우스 커서에 딱 붙어서 따라다니도록 설정
+                    spikethickness=1,          # 선 굵기
+                    spikedash='dot',           # 점선 스타일
+                    spikecolor='#555555'       # 진한 회색
+                )
+                
                 st.plotly_chart(fig, use_container_width=True)
