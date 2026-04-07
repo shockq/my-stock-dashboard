@@ -17,14 +17,21 @@ my_buy_price = st.sidebar.number_input("나의 매수 단가 (가상)", value=15
 # 데이터 가져오기
 data = yf.download(watched_stocks, period="1y", interval="1d")
 
+# 기존 20~27번 줄 근처를 아래 내용으로 교체하세요
 if not data.empty:
-    curr_price = data['Close'].iloc[-1]
-    change = curr_price - my_buy_price
-    percent = (change / my_buy_price) * 100
-
+    # 데이터를 확실하게 숫자형(float)으로 변환하여 마지막 값 추출
+    curr_price = float(data['Close'].iloc[-1])
+    
     # 2. 상단 지표 (손익 현황)
     col1, col2, col3 = st.columns(3)
+    
+    # 현재가 표시
     col1.metric("현재가", f"${curr_price:.2f}")
+    
+    # 매수 단가와 수익률 계산
+    change = curr_price - my_buy_price
+    percent = (change / my_buy_price) * 100
+    
     col2.metric("나의 매수가", f"${my_buy_price:.2f}")
     col3.metric("현재 손익", f"{change:.2f} ({percent:.2f}%)", delta=f"{percent:.2f}%")
 
